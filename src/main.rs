@@ -79,7 +79,7 @@ async fn main() {
         next_frame().await
     }*/
 
-    let minimum_frame_time = 1. / 240.; // 60 FPS
+    let minimum_frame_time = 1. / 60.; // 60 FPS
 
     let mut coords: VecDeque<LineCoord> = VecDeque::new();
 
@@ -91,14 +91,6 @@ async fn main() {
     };
 
     coords.push_back(lc);
-
-    /*
-    let mut x1 = 0.0;
-    let mut y1 = 0.0;
-
-    let mut x2 = 100.0;
-    let mut y2 = 50.0;
-     */
 
     let mut dx1 = 2.0;
     let mut dy1 = 2.0;
@@ -162,12 +154,24 @@ async fn main() {
             y2: y2,
         };
 
-        if coords.len() > 10 {
+        if coords.len() > 50 {
             coords.pop_front();
         }
         coords.push_back(ccn);
 
-        /*
+
+        // Draw UI.
+        egui_macroquad::ui(|egui_ctx| {
+            egui::Window::new("egui ❤ macroquad")
+                .show(egui_ctx, |ui| {
+                    ui.label("Test");
+                });
+        });
+
+        egui_macroquad::draw();
+
+        
+        // FPS.
         let frame_time = get_frame_time();
         println!("Frame time: {}ms", frame_time * 1000.);
         if frame_time < minimum_frame_time {
@@ -175,7 +179,7 @@ async fn main() {
             println!("Sleep for {}ms", time_to_sleep);
             std::thread::sleep(std::time::Duration::from_millis(time_to_sleep as u64));
         }
-         */
+        
 
         next_frame().await
     }
